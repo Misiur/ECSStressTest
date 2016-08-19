@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="ECX" package="com.sample.ecx" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="ECX" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	<haxelib name="ecx" />
+	
+	<assets path="Assets" rename="assets" />
+
+	<window width="750" height="400" fps="60" />
+</project>
