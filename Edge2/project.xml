@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="Edge2" package="com.sample.edge2" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="Edge2" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	<haxelib name="edge" />
+	<haxelib name="thx.core" />
+	
+	<assets path="Assets" rename="assets" />
+
+	<window width="750" height="400" fps="60" />
+</project>
