@@ -1,7 +1,7 @@
 package;
 
 import edge.Engine;
-import edge.View;
+import edge.Processor;
 import haxe.ds.Option;
 import openfl.Lib;
 import openfl.display.BitmapData;
@@ -14,7 +14,7 @@ import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.events.Event;
 import openfl.display.FPS;
-import thx.Unit;
+import thx.ReadonlyArray;
 
 using thx.ReadonlyArray;
 
@@ -31,11 +31,11 @@ class Main extends Sprite
     {
         removeEventListener(Event.ENTER_FRAME, init, false);
 
-        var engine = Engine.withEnumEnvironment(),
+        var engine = Engine.withEnumProperty(),
         phase = engine.createPhase();
 
-        phase.addView(View.components(MotionSystem.extract))
-          .with(MotionSystem.system);
+        phase.processComponents(MotionSystem.extract)
+          .feed(MotionSystem.system);
 
         var bullet = new Shape();
         bullet.graphics.beginFill(0x000000);
@@ -61,14 +61,14 @@ class Main extends Sprite
             tilemap.addTile(tile);
 
             engine.createEntity([
-	        	Motion(new Point((Math.random() * 10) - 5, (Math.random() * 10) - 5)),
-	        	Render(tile)
+              Motion(new Point((Math.random() * 10) - 5, (Math.random() * 10) - 5)),
+              Render(tile)
             ]);
         }
 
         addChild(tilemap);
         addChild(new FPS());
-        
+
         createLoop(phase.update);
     }
 
@@ -90,8 +90,8 @@ enum Components
 
 
 class MotionSystem
-{    
-    public static function system(list: ReadonlyArray<ItemEntity<{ motion: Point, tile: Tile }, Components, Unit>>)
+{
+    public static function system(list: ReadonlyArray<ItemEntity<{ motion: Point, tile: Tile }, Components>>)
     {
         for(item in list) {
             var motion = item.data.motion;
@@ -103,7 +103,7 @@ class MotionSystem
         }
     }
 
-    public static function extract(comps: Iterator<Components>)
+    public static function extract(comps: ReadonlyArray<Components>)
     {
         var out = { motion: None, tile: None };
         for(comp in comps) switch comp {
